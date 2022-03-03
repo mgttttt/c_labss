@@ -19,7 +19,7 @@ int main() {
         x += h;
     } while (fabs(x - 2.0 - 2.0 * h) >= h);
 
-    /*for (int i = 0; i <= 2 / h; i++)
+    /*for (int i = 0; fabs(x - 2.0 - 2.0 * h) >= h; i++)
     {
         if (x <= 1)
             printf("%f    %f\n", x, 8 * pow(x, 3) * cos(x));
