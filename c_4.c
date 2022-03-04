@@ -21,6 +21,5 @@ int main() {
         sum *= h;
     } while (fabs(sum - old_I) / 3.0 >= n);
     printf("%lf", sum);
-
     return 0;
 }
