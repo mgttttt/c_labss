@@ -40,6 +40,6 @@ int main() {
     int array[m][n];
     fill(m, n, array);
     out(m, n, array);
-    printf("%lf", findNorm(m, n, array));
+    printf("%lf\n", findNorm(m, n, array));
     return 0;
 }
