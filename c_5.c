@@ -1,16 +1,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
-#include <iostream>
-using namespace std;
-#pragma warning(disable : 4996)
 
 double common_average(int n)
 {
     int count_of_dg = 0;
     double result = 0;
-    while (n > 0)
+    while (n)
     {
         result += n % 10;
         n /= 10;
@@ -19,14 +15,11 @@ double common_average(int n)
     return result / count_of_dg;
 }
 
-double rec_average(int n)
+double rec_average(int n, int count)
 {
-    static int count_of_dg = 0;
-    static double result = 0;
-    result += n % 10;
-    n /= 10;
-    count_of_dg++;
-    return (n > 0) ? rec_average(n) : result / count_of_dg;
+    if (!n) return 1.0 / count;
+    double sum = rec_average(n / 10, count + 1) + n % 10;
+    return (int)sum / (1 / (sum - (int)sum));
 }
 
 int main() {
@@ -35,8 +28,8 @@ int main() {
     scanf("%d", &number);
 
     printf("Average sum of digits:\n");
-    printf("Cicle: %lf \n", common_average(number));
-    printf("Recursion: %lf", rec_average(number));
+    printf("Cycle: %lf\n", common_average(number));
+    printf("Recursion: %lf\n", rec_average(number, 0));
 
     return 0;
 }
