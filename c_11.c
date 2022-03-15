@@ -10,33 +10,35 @@ struct market {
     int price;
 };
 
-void add_note(market* spare_parts, int n)
+void add_note(market spare_parts[], int n)
 {
     int price;
     char* note = (char *)malloc(sizeof(char) * 100);
     printf("Enter name -> ");
     fgets(note, 100, stdin);
     note[strlen(note) - 1] = 0;
-    spare_parts[n].name = note;
+    sprintf(spare_parts[n].name, "%s", note);
     printf("Enter brand -> ");
-    fgets(note, 100, stdin); note[strlen(note) - 1] = 0;
-    spare_parts[n].brand = note;
+    fgets(note, 100, stdin); 
+    note[strlen(note) - 1] = 0;
+    sprintf(spare_parts[n].brand, "%s", note);
     printf("Enter model -> ");
-    fgets(note, 100, stdin); note[strlen(note) - 1] = 0;
-    spare_parts[n].model = note;
+    fgets(note, 100, stdin); 
+    note[strlen(note) - 1] = 0;
+    sprintf(spare_parts[n].model, "%s", note);
     printf("Enter price -> ");
     scanf("%d", &price);
     fgets(note, 10, stdin);
     spare_parts[n].price = price;
 }
 
-void all_notes(market* spare_parts, int n)
+void all_notes(market spare_parts[], int n)
 {
     for (int i = 0; i < n; i++)
         printf("%d note: name: %s, brand: %s, model: %s, price: %d\n", i + 1, spare_parts[i].name, spare_parts[i].brand, spare_parts[i].model, spare_parts[i].price);
 }
 
-void del_note(market* spare_parts, int n, int del)
+void del_note(market spare_parts[], int n, int del)
 {
     for (int i = del; i < n - 1; i++)
     {
@@ -50,7 +52,7 @@ int main() {
     int count = 0;
     int del;
     char* query = (char*)malloc(sizeof(char) * 100);
-    struct market * spare_parts = (market *)malloc(sizeof(market) * 20);
+    struct market spare_parts[20];
 
     printf("Enter \"q\" if you watn to quit\n");
     printf("Enter \"add\" if you want to add a new note\n");
