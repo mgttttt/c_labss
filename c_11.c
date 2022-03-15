@@ -71,9 +71,11 @@ int main() {
         }
         else if (!strcmp(query, "ls"))
             all_notes(spare_parts, count);
-        else if (!strncmp(query, "del ", 4))
+        else if (!strcmp(query, "del"))
         {
+            printf("Enter a number of note you want to delete -> ");
             scanf("%d", &del);
+            fgets(query, 10, stdin);
             del_note(spare_parts, count, del - 1);
             count--;
         }
