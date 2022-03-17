@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
 double common_average(int n)
 {
     int count_of_dg = 0;
