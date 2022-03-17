@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-
 void fill(int m, int n, int *(array[n]))
 {
     for (int i = 0; i < m; i++)
