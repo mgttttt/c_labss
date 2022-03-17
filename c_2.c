@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
 int main() {
     double x;
     printf("Enter x {0.01 <= x <= 1.39} -> ");
