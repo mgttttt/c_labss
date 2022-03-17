@@ -8,7 +8,6 @@ void fill(int m, int n, int array[][n])
         for (int j = 0; j < n; j++)
             array[i][j] = rand() % 200 + 1;
 }
-
 void out(int m, int n, int arr[][n])
 {
     for (int i = 0; i < m; i++)
