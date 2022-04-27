@@ -98,15 +98,15 @@ int main(int argc, char const *argv[])
     {
         for (int i = 0; i < len; i++)
         {
-            int count = 0;
-            if (str[i] > 128)
+            b.c = str[i];
+            if (b.byte.bit2 == 1)
             {
-              add_nch(str[i] - 128, str[i + 1], fout);
+              add_nch(b.c - 128, str[i + 1], fout);
               i++;
             }
             else
             {
-              count = str[i];
+              count = b.byte.bit1;
               while (count)
               {
                 i++;
@@ -123,3 +123,4 @@ int main(int argc, char const *argv[])
     free(buf);
     return 0;
 }
+
