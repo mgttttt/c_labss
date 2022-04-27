@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <ctype.h>
-#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct byte
 {
@@ -12,78 +11,113 @@ struct byte
 
 union bt
 {
-    char c;
+    unsigned char c;
     struct byte byte;
 };
 
-int main()
+void add_nch(int n, char c, FILE * fout)
 {
-    char* str = (char*)calloc(100, sizeof(char));
-    char* result = (char*)calloc(100, sizeof(char));
-    char* buf = (char*)calloc(256, sizeof(char));
-    union bt b = {0};
-    scanf("%s", str);
+    while (n)
+    {
+        fprintf(fout, "%c", c);
+        n--;
+    }
+}
+
+int main(int argc, char const *argv[])
+{
+    char *str = (char *)calloc(256, sizeof(char));
+    char *result = (char *)calloc(256, sizeof(char));
+    char *buf = (char *)calloc(256, sizeof(char));
+    FILE *fin = fopen(argv[2], "r");
+    FILE *fout = fopen(argv[3], "w");
+    fgets(str, 256, fin);
+    union bt b;
     int len = strlen(str), count = 0, flag = 0;
     int len_res = 0, buf_len = 0;
     char c;
-    for (int i = 1; i < len; i++)
+    if(!strcmp(argv[1], "e"))
     {
-        if (flag)
+        for(int i = 1; i < len; i++)
         {
-            if (str[i] == str[i - 1])
-                count++;
-            else
+            if(flag)
             {
-                b.byte.bit2 = 1;
-                b.byte.bit1 = count;
-                len_res = strlen(result);
-                result[len_res++] = b.c;
-                result[len_res++] = c;
-                flag = 0;
-                count = 0;
-            }
-        }
-        else
-        {
-            if (str[i] == str[i - 1])
-            {
-                count += 2;
-                c = str[i];
-                flag = 1;
-                if (buf_len)
+                if(str[i] == str[i - 1])
+                    count++;
+                else
                 {
-                    b.byte.bit2 = 0;
-                    b.byte.bit1 = buf_len;
+                    b.byte.bit2 = 1;
+                    b.byte.bit1 = count;
+                    len_res = strlen(result);
                     result[len_res++] = b.c;
-                    strcat(result, buf);
-                    buf[buf_len] = 0;
-                    buf_len = 0;
+                    result[len_res++] = c;
+                    flag = 0;
+                    count = 0;
                 }
             }
             else
-                buf[buf_len++] = str[i - 1];
+            {
+                if(str[i] == str[i - 1])
+                {
+                    count += 2;
+                    c = str[i];
+                    flag = 1;
+                    if(buf_len)
+                    {
+                        b.byte.bit2 = 0;
+                        b.byte.bit1 = buf_len;
+                        result[len_res++] = b.c;
+                        strcat(result, buf);
+                        buf[buf_len] = 0;
+                        buf_len = 0;
+                    }
+                }
+                else
+                    buf[buf_len++] = str[i - 1];
+            }
+        }
+        if(flag)
+        {
+            b.byte.bit2 = 1;
+            b.byte.bit1 = count;
+            len_res = strlen(result);
+            result[len_res++] = b.c;
+            result[len_res++] = c;
+        }
+        else if(buf_len)
+        {
+            buf[buf_len++] = str[len - 1];
+            b.byte.bit2 = 0;
+            b.byte.bit1 = buf_len;
+            result[len_res++] = b.c;
+            strcat(result, buf);
+        }
+      fprintf(fout, "%s", result);
+    }
+    else
+    {
+        for (int i = 0; i < len; i++)
+        {
+            int count = 0;
+            if (str[i] > 128)
+            {
+              add_nch(str[i] - 128, str[i + 1], fout);
+              i++;
+            }
+            else
+            {
+              count = str[i];
+              while (count)
+              {
+                i++;
+                fprintf(fout, "%c", str[i]);
+                count--;
+              }
+            }
         }
     }
-    if (flag)
-    {
-        b.byte.bit2 = 1;
-        b.byte.bit1 = count;
-        len_res = strlen(result);
-        result[len_res++] = b.c;
-        result[len_res++] = c;
-    }
-    else if (buf_len)
-    {
-        buf[buf_len++] = str[len - 1];
-        b.byte.bit2 = 0;
-        b.byte.bit1 = buf_len;
-        result[len_res++] = b.c;
-        strcat(result, buf);
-    }
-    len_res = strlen(result);
-    printf("%s\n", result);
-    for (int i = 0; i < len_res; i++)
-        printf("%hhu\n", result[i]);
+    fclose(fin);
+    fclose(fout);
     free(result);
     free(str);
     free(buf);
