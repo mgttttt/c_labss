@@ -2,12 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+
+//функция заполнения двумерного массива
 void fill(int m, int n, int array[][n])
 {
     for (int i = 0; i < m; i++)
         for (int j = 0; j < n; j++)
             array[i][j] = rand() % 200 + 1;
 }
+
+//функция вывода двумерного массива
 void out(int m, int n, int arr[][n])
 {
     for (int i = 0; i < m; i++)
@@ -19,6 +23,7 @@ void out(int m, int n, int arr[][n])
     printf("\n");
 }
 
+//функция поиска максимальной и минимальной суммы по строкам
 void findSumInRows(int m, int n, int array[][n])
 {
   int sum = 0;
@@ -29,8 +34,12 @@ void findSumInRows(int m, int n, int array[][n])
       sum = 0;
       for (int j = 0; j < n; j++)
           sum += array[i][j];
+          //суммируем элементы строки
+      //сравнение найденной суммы с максимальной и минимальной
       if (sum > max)
       {
+          //елсли больше максимальной, присваиваем сумму максимуму
+          //также запоминаем в переменной i_max индекс строки
           max = sum;
           i_max = i;
       }
@@ -43,6 +52,7 @@ void findSumInRows(int m, int n, int array[][n])
   printf("max sum: %d in row number: %d\nmin sum: %d in row number: %d\n", max, i_max, min, i_min);
 }
 
+//функция аналогична прошлой, только поиск идет по столбцам
 void findSumInColumns(int m, int n, int array[][n])
 {
   int sum = 0;
