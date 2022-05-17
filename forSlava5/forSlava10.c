@@ -1,3 +1,4 @@
+//программа аналогична 7 лабе
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -68,6 +69,7 @@ void findSumInColumns(int m, int n, int *(array[n]))
 }
 
 int main() {
+    
     srand(time(NULL));
     int n, m;
     printf("Enter count of rows: ");
@@ -75,19 +77,20 @@ int main() {
     printf("Enter count of columns: ");
     scanf("%d", &n);//количество столбцов
     int **array = (int **)malloc(sizeof(int *) * m);
-    if (!array)
+    //динамическое выделение памяти 
+    if (!array) //проверяем выделилась ли память
     {
       printf("Memory allocation error!\n");
       exit(EXIT_FAILURE);
     }
     for (int i = 0; i < m; i++)
-      array[i] = (int *)malloc(n * sizeof(int));
+      array[i] = (int *)malloc(n * sizeof(int));//выделяем память под одномерные массивы
     fill(m, n, array);//заполняем массив
     out(m, n, array);//вывод массив
     findSumInRows(m, n, array);
     findSumInColumns(m, n, array);
     for (int i = 0; i < m; i++)
-      free(array[i]);
+      free(array[i]);//освобождение выделенной памяти
     free(array);
     return 0;
 }
