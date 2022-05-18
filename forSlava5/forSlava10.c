@@ -1,83 +1,97 @@
-//программа аналогична 7 лабе
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+
+//функция заполнения двумерного массива
 void fill(int m, int n, int *(array[n]))
 {
     for (int i = 0; i < m; i++)
         for (int j = 0; j < n; j++)
-            array[i][j] = rand() % 200 + 1;
+            array[i][j] = rand() % 101 - 50;
 }
-void out(int m, int n, int *(arr[n]))
+
+//функция вывода двумерного массива
+void out(int m, int n, int *(array[n]), int *i_max, int *i_min, int *max_row, int *min_row, int *j_max, int *j_min, int *max_col, int *min_col)
 {
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
-            printf("%4d", arr[i][j]);
+            printf("%10d", array[i][j]);
+        if (i == *i_max) printf(" max:%d", *max_row);
+        if (i == *i_min) printf(" min:%d", *min_row);
         printf("\n");
+    }
+    for (int j = 0; j < n; j++)
+    {
+      if (j == *j_min) printf("   min:%d", *min_col);
+      else if (j == *j_max) printf("   max:%d", *max_col);
+      else {
+        printf("%10c", ' ');
+      }
     }
     printf("\n");
 }
 
-void findSumInRows(int m, int n, int *(array[n]))
+//функция поиска максимальной и минимальной суммы по строкам
+void findSumInRows(int m, int n, int *(array[n]), int *i_max, int *i_min, int *max_row, int *min_row)
 {
   int sum = 0;
-  int max = -1E9, min = 1E9;
-  int i_max, i_min;
   for (int i = 0; i < m; i++)
   {
       sum = 0;
       for (int j = 0; j < n; j++)
           sum += array[i][j];
-      if (sum > max)
+          //суммируем элементы строки
+      //сравнение найденной суммы с максимальной и минимальной
+      if (sum > *max_row)
       {
-          max = sum;
-          i_max = i;
+          //елсли больше максимальной, присваиваем сумму максимуму
+          //также запоминаем в переменной i_max индекс строки
+          *max_row = sum;
+          *i_max = i;
       }
-      if (sum < min)
+      if (sum < *min_row)
       {
-          min = sum;
-          i_min = i;
+          *min_row = sum;
+          *i_min = i;
       }
   }
-  printf("max sum: %d in row number: %d\nmin sum: %d in row number: %d\n", max, i_max, min, i_min);
 }
 
-void findSumInColumns(int m, int n, int *(array[n]))
+//функция аналогична прошлой, только поиск идет по столбцам
+void findSumInColumns(int m, int n, int *(array[n]), int *j_max, int *j_min, int *max_col, int *min_col)
 {
   int sum = 0;
-  int max = -1E9, min = 1E9;
-  int j_max, j_min;
   for (int j = 0; j < n; j++)
   {
       sum = 0;
       for (int i = 0; i < m; i++)
           sum += array[i][j];
-      if (sum > max)
+      if (sum > *max_col)
       {
-          max = sum;
-          j_max = j;
+          *max_col = sum;
+          *j_max = j;
       }
-      if (sum < min)
+      if (sum < *min_col)
       {
-          min = sum;
-          j_min = j;
+          *min_col = sum;
+          *j_min = j;
       }
   }
-  printf("max sum: %d in column number: %d\nmin sum: %d in column number: %d\n", max, j_max, min, j_min);
 }
 
 int main() {
-    
     srand(time(NULL));
     int n, m;
+    int i_max = -1, i_min = -1, j_max = -1, j_min = -1;
+    int max_col = -1E9, min_col = 1E9, max_row = -1E9, min_row = 1E9;
     printf("Enter count of rows: ");
     scanf("%d", &m);//количество строк
     printf("Enter count of columns: ");
     scanf("%d", &n);//количество столбцов
     int **array = (int **)malloc(sizeof(int *) * m);
-    //динамическое выделение памяти 
+    //динамическое выделение памяти
     if (!array) //проверяем выделилась ли память
     {
       printf("Memory allocation error!\n");
@@ -86,9 +100,9 @@ int main() {
     for (int i = 0; i < m; i++)
       array[i] = (int *)malloc(n * sizeof(int));//выделяем память под одномерные массивы
     fill(m, n, array);//заполняем массив
-    out(m, n, array);//вывод массив
-    findSumInRows(m, n, array);
-    findSumInColumns(m, n, array);
+    findSumInRows(m, n, array, &i_max, &i_min, &max_row, &min_row);
+    findSumInColumns(m, n, array, &j_max, &j_min, &max_col, &min_col);
+    out(m, n, array, &i_max, &i_min, &max_row, &min_row, &j_max, &j_min, &max_col, &min_col);//вывод массив
     for (int i = 0; i < m; i++)
       free(array[i]);//освобождение выделенной памяти
     free(array);
