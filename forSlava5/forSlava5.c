@@ -24,9 +24,8 @@ int rec_countOfDigits(int n)
 
 int main() {
     int number;
-    //считываем  число
     printf("Enter integer number: ");
-    scanf("%d", &number);
+    scanf("%d", &number);//считываем  число
     //вызываем обычную функцию и рекурсивную в том случае если н не 0
     //иначе просто выводим 1 без вызова функций
     printf("Count of digits:\n");
