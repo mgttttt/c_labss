@@ -10,15 +10,14 @@ typedef struct cafe {
     int price;
 } cafe;
 
-//добавление записи
 void add_note(cafe c[], int n)
 {
     char note[256];
     printf("Enter name -> ");
-    fgets(note, 255, stdin);//считываем строку
-    note[strlen(note) - 1] = 0;//строка считывается вместе с энтером, поэтому его удаляем
-    sprintf(c[n].name, "%s", note);//принтим введенную строку в имя n-ого элемента массива
-    printf("Enter category -> ");//дальше аналогично
+    fgets(note, 255, stdin);
+    note[strlen(note) - 1] = 0;
+    sprintf(c[n].name, "%s", note);
+    printf("Enter category -> ");
     fgets(note, 255, stdin);
     note[strlen(note) - 1] = 0;
     sprintf(c[n].category, "%s", note);
@@ -31,15 +30,12 @@ void add_note(cafe c[], int n)
     fgets(note, 10, stdin);
 }
 
-//функция вывода всех записей 
 void all_notes(cafe c[], int n)
 {
     for (int i = 0; i < n; i++)
         printf("%d note: name: %s, category: %s, calories: %d, grams: %d, price: %d\n", i + 1, c[i].name, c[i].category, c[i].calories, c[i].grams, c[i].price);
 }
 
-//йункция удаления записи
-//чтобы "удалить" запись перетаскиваем нужную запись в конец и уменьшаем общее количество элементов на 1
 void del_note(cafe c[], int n, int del)
 {
     for (int i = del; i < n - 1; i++)
@@ -50,9 +46,6 @@ void del_note(cafe c[], int n, int del)
     }
 }
 
-//считывание данных из файла
-//в файле храним все данные разделенные ";"
-//поэтому сплитим считанную из файла строку по ";" и последовательно считываем данные
 int file_input(FILE* f, cafe c[])
 {
     char str[256];
@@ -60,30 +53,27 @@ int file_input(FILE* f, cafe c[])
     int count = 0;
     while (fgets(str, 256, f) != NULL)
     {
-        istr = strtok(str, ";");
+        istr = strtok(str, ";\n");
         sprintf(c[count].name, "%s", istr);
-        istr = strtok(NULL, ";");
+        istr = strtok(NULL, ";\n");
         sprintf(c[count].category, "%s", istr);
-        istr = strtok(NULL, ";");
+        istr = strtok(NULL, ";\n");
         c[count].calories = atoi(istr);
-        istr = strtok(NULL, ";");
+        istr = strtok(NULL, ";\n");
         c[count].grams = atoi(istr);
-        istr = strtok(NULL, ";");
+        istr = strtok(NULL, ";\n");
         c[count].price = atoi(istr);
         count++;
     }
     return count;
 }
 
-//запись всех элементов в файл
 void file_output(FILE* f, cafe c[], int count)
 {
     for (int i = 0; i < count; i++)
         fprintf(f, "%s;%s;%d;%d;%d\n", c[i].name, c[i].category, c[i].calories, c[i].grams, c[i].price);
 }
 
-//поиск всех блюд по категории "второе блюдо"
-//и вывод данных по этим записям
 void find_second_course(cafe c[], int count)
 {
   for (int i = 0; i < count; i++)
